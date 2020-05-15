@@ -1,0 +1,3 @@
+rootProject.name='Mercuryo'
+include ':sample'
+include ':sdk'

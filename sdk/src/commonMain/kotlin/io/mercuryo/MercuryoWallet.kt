@@ -12,7 +12,7 @@ class MercuryoWallet internal constructor(
     private val httpClientFactory: HttpClientFactory
 ) {
 
-    private val endpoint = "https://api.mercuryo.io/"
+    private val endpoint = "https://api.mrcr.io"
     private val token = "046e5a60aa64a8806BbiWw8QtwunDtMcbhsCGoSFp0fIVrsRHt-FSLga-O0rgt5p"
 
     private val json = Json(
@@ -43,11 +43,15 @@ class MercuryoWallet internal constructor(
      */
     suspend fun getTransactions(
         type: String? = null,
-        limit: Int? = null,
-        offset: Int? = null,
+        limit: Int = defaultPageSize,
+        offset: Int = 0,
         currency: String? = null
     ): List<Transaction> {
         return api.getTransactions(type, limit, offset, currency)
     }
 
+
+    companion object {
+        const val defaultPageSize: Int = 20
+    }
 }

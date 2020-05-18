@@ -4,9 +4,7 @@ import io.mercuryo.entity.Transaction
 
 internal interface Api {
     companion object {
-        const val API_VERSION = "/v1.6"
-
-        const val MAX_PAGE_SIZE = 100
+        const val API_VERSION = "/v1.5"
     }
 
     suspend fun getTransactions(

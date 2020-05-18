@@ -62,6 +62,8 @@ kotlin {
                 implementation("io.ktor:ktor-client-auth-jvm:$ktorVersion")
                 implementation("io.ktor:ktor-client-logging-jvm:$ktorVersion")
                 implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+                implementation("com.squareup.okhttp3:logging-interceptor:4.0.1")
+
                 //Coroutines
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
                 //JSON

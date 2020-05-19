@@ -1,0 +1,4 @@
+#!/bin/bash
+export 'JAVA_HOME=/private/var/folders/3z/flsmvrxx6x5fp25mqzw106v80000gn/T/AppTranslocation/6FB8D328-F3F7-4CE9-90E5-BA9EBA4154AC/d/Android Studio 4.1 Preview 2.app/Contents/jre/jdk/Contents/Home/jre'
+cd '/Users/atimofeev/Documents/Projects/4Taps/Mercuryo'
+./gradlew $@

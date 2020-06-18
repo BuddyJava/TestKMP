@@ -1,19 +1,22 @@
 package io.mercuryo
 
+import io.mercuryo.auth.AuthManager
 import io.mercuryo.entity.Transaction
+import io.mercuryo.entity.VerifyMetaData
 import io.mercuryo.server.Api
 import io.mercuryo.server.ApiImpl
+import io.mercuryo.storage.Storage
 import io.mercuryo.util.HttpClientFactory
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 
-class MercuryoWallet internal constructor(
+class Mercuryo internal constructor(
     private val isDebug: Boolean,
-    private val httpClientFactory: HttpClientFactory
+    private val httpClientFactory: HttpClientFactory,
+    private val storage: Storage
 ) {
 
     private val endpoint = "https://api.mrcr.io"
-    private val token = "046e5a60aa64a8806BbiWw8QtwunDtMcbhsCGoSFp0fIVrsRHt-FSLga-O0rgt5p"
 
     private val json = Json(
         JsonConfiguration.Stable.copy(
@@ -26,8 +29,20 @@ class MercuryoWallet internal constructor(
     private val api: Api by lazy {
         ApiImpl(
             endpoint,
-            httpClientFactory.create(json, token, isDebug)
+            httpClientFactory.create(
+                json = json,
+                holder = storage,
+                enableLogging = isDebug
+            )
         )
+    }
+
+    private val authManager: AuthManager by lazy {
+        AuthManager(api, storage)
+    }
+
+    suspend fun signIn(login: String, password: String): VerifyMetaData {
+        return authManager.signIn(login, password)
     }
 
     /**

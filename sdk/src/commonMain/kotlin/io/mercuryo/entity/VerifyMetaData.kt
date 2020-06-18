@@ -8,7 +8,7 @@ class VerifyMetaData(
     @SerialName("token") val token: String? = null,
     @SerialName("key") val key: String? = null,
     @SerialName("code_length") private val _codeLength: Int? = null,
-    @SerialName("next") val next: String? = null,
+    @SerialName("next") val next: NextStep? = null,
     @SerialName("timeout") private val _timeout: Int? = null,
     @SerialName("masked") private val _source: String? = null,
     @SerialName("edit_token") val editToken: String? = null
@@ -23,4 +23,12 @@ class VerifyMetaData(
     val source: String
         get() = _source ?: ""
 
+    @Serializable
+    enum class NextStep {
+        @SerialName("verify-phone")
+        PHONE,
+
+        @SerialName("verify-email")
+        EMAIL,
+    }
 }

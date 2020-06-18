@@ -2,23 +2,31 @@ package io.mercuryo
 
 import com.github.aakira.napier.DebugAntilog
 import com.github.aakira.napier.Napier
+import com.russhwolf.settings.AppleSettings
 import io.mercuryo.entity.Transaction
+import io.mercuryo.storage.Storage
 import io.mercuryo.util.HttpClientFactory
 import io.mercuryo.util.MainLoopDispatcher
 import io.mercuryo.util.createHttpEngine
 import io.mercuryo.util.wrap
 import kotlinx.coroutines.CoroutineScope
 
-class IMercuryoWallet(
+class IMercuryo(
     isDebug: Boolean
 ) : CoroutineScope by CoroutineScope(MainLoopDispatcher) {
     init {
         if (isDebug) Napier.base(DebugAntilog())
     }
 
-    private val wallet = MercuryoWallet(
-        isDebug,
-        HttpClientFactory { cacheSize, timeout -> createHttpEngine(cacheSize, timeout) }
+    private val wallet = Mercuryo(
+        isDebug = isDebug,
+        httpClientFactory = HttpClientFactory { cacheSize, timeout ->
+            createHttpEngine(
+                cacheSize,
+                timeout
+            )
+        },
+        storage = Storage(settings = AppleSettings.Factory().create("mercuryo"))
     )
 
     /**
@@ -34,7 +42,7 @@ class IMercuryoWallet(
      */
     fun getTransactions(
         type: String? = null,
-        limit: Int = MercuryoWallet.defaultPageSize,
+        limit: Int = Mercuryo.defaultPageSize,
         offset: Int = 0,
         currency: String? = null,
         callback: (result: List<Transaction>?, error: Exception?) -> Unit

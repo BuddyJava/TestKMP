@@ -15,6 +15,7 @@ import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.auth.HttpAuthHeader
 import io.ktor.utils.io.readUTF8Line
+import io.mercuryo.auth.AuthHolder
 import io.mercuryo.server.error.MercuryoException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
@@ -24,7 +25,7 @@ class HttpClientFactory(
 ) {
     fun create(
         json: Json,
-        token: String?,
+        holder: AuthHolder,
         enableLogging: Boolean
     ): HttpClient = HttpClient(engineFactory(CACHE_SIZE_BYTES, TIMEOUT)) {
         HttpResponseValidator {
@@ -65,7 +66,7 @@ class HttpClientFactory(
                 override fun isApplicable(auth: HttpAuthHeader) = true
 
                 override suspend fun addRequestHeaders(request: HttpRequestBuilder) {
-                    token?.let {
+                    holder.authToken?.let { token ->
                         request.headers["X-Api-Token"] = token
                     }
                 }

@@ -1,7 +1,7 @@
 package io.mercuryo.server
 
-import io.mercuryo.entity.Transaction
-import io.mercuryo.entity.VerifyMetaData
+import io.mercuryo.entity.*
+import io.mercuryo.entity.request.TransactionType
 
 internal interface Api {
     companion object {
@@ -14,7 +14,6 @@ internal interface Api {
         const val CHANGE_PASSWORD = "user/change-password"
         const val CHANGE_PHONE = "user/change-phone"
         const val CHANGE_EMAIL = "user/change-email"
-
     }
 
     suspend fun signIn(login: String, password: String): VerifyMetaData
@@ -48,6 +47,23 @@ internal interface Api {
     ): VerifyMetaData
 
     suspend fun resendVerifyCode(key: String): VerifyMetaData
+
+    suspend fun getWallets(): List<Wallet>
+    suspend fun getWalletAddress(currency: String): String
+
+    suspend fun getLimits(
+        cryptoCurrency: String?,
+        fiatCurrency: String?
+    ): HashMap<String, HashMap<String, Limit>>
+
+    suspend fun getPublicConvert(
+        fromCurrency: String,
+        toCurrency: String,
+        type: TransactionType,
+        amount: Double
+    ): ConverterRate
+
+    suspend fun getRate(fromCurrency: String, toCurrency: String, type: TransactionType): Rate
 
     suspend fun getTransactions(
         type: String?,

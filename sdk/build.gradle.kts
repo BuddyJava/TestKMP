@@ -28,7 +28,7 @@ kotlin {
         val coroutinesVersion = "1.3.4"
         val serializationVersion = "0.20.0"
         val napierVersion = "1.2.0"
-        val settingsVersion = "0.6.0"
+        val settingsVersion = "0.6"
         commonMain {
             dependencies {
                 //Kotlin

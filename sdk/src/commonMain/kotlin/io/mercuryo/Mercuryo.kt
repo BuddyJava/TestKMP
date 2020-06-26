@@ -16,7 +16,7 @@ class Mercuryo internal constructor(
     private val storage: Storage
 ) {
 
-    private val endpoint = "https://api.mrcr.io"
+    private val url = "https://api.mrcr.io"
 
     private val json = Json(
         JsonConfiguration.Stable.copy(
@@ -28,8 +28,8 @@ class Mercuryo internal constructor(
 
     private val api: Api by lazy {
         ApiImpl(
-            endpoint,
-            httpClientFactory.create(
+            url = url,
+            httpClient = httpClientFactory.create(
                 json = json,
                 holder = storage,
                 enableLogging = isDebug
@@ -41,8 +41,84 @@ class Mercuryo internal constructor(
         AuthManager(api, storage)
     }
 
+    val isAuth: Boolean
+        get() = authManager.isAuth
+
     suspend fun signIn(login: String, password: String): VerifyMetaData {
-        return authManager.signIn(login, password)
+        return authManager.signIn(
+            login = login,
+            password = password
+        )
+    }
+
+    suspend fun verifySignIn(
+        verifyType: String,
+        key: String,
+        code: String,
+        editToken: String? = null
+    ): VerifyMetaData {
+        return authManager.verify(
+            endpoint = "${Api.SIGN_IN_PATH}/$verifyType",
+            key = key,
+            code = code,
+            client = null,
+            editToken = editToken
+        )
+    }
+
+    suspend fun signUp(
+        countryCode: String,
+        phone: String,
+        refCode: String? = null
+    ): VerifyMetaData {
+        return authManager.signUp(
+            countryCode = countryCode,
+            phone = phone,
+            refCode = refCode
+        )
+    }
+
+    suspend fun verifySignUp(
+        verifyType: String,
+        key: String,
+        code: String,
+        editToken: String? = null
+    ): VerifyMetaData {
+        return authManager.verify(
+            endpoint = "${Api.SIGN_UP_PATH}/$verifyType",
+            key = key,
+            code = code,
+            client = null,
+            editToken = editToken
+        )
+    }
+
+    suspend fun resendVerifyCode(key: String): VerifyMetaData {
+        return api.resendVerifyCode(key = key)
+    }
+
+    suspend fun sendPersonData(
+        firstName: String,
+        lastName: String,
+        birthDay: String,
+        editToken: String? = null
+    ): VerifyMetaData {
+        return authManager.sendPersonData(
+            firstName = firstName,
+            lastName = lastName,
+            birthDay = birthDay,
+            editToken = editToken
+        )
+    }
+
+    suspend fun sendEmail(
+        email: String,
+        editToken: String? = null
+    ): VerifyMetaData {
+        return authManager.sendEmail(
+            email = email,
+            editToken = editToken
+        )
     }
 
     /**
@@ -62,9 +138,13 @@ class Mercuryo internal constructor(
         offset: Int = 0,
         currency: String? = null
     ): List<Transaction> {
-        return api.getTransactions(type, limit, offset, currency)
+        return api.getTransactions(
+            type = type,
+            limit = limit,
+            offset = offset,
+            currency = currency
+        )
     }
-
 
     companion object {
         const val defaultPageSize: Int = 20

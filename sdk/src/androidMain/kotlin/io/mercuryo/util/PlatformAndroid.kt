@@ -7,7 +7,7 @@ import okhttp3.Cache
 import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
 
-
+internal actual val platform: String = "android"
 internal actual fun currentTimeMillis(): Long = System.currentTimeMillis()
 
 internal fun createHttpEngine(

@@ -13,11 +13,11 @@ import io.mercuryo.server.Api.Companion.SIGN_IN_PATH
 import io.mercuryo.server.Api.Companion.SIGN_UP_PATH
 
 internal class ApiImpl(
-    endpoint: String,
+    url: String,
     private val httpClient: HttpClient
 ) : Api {
 
-    private val baseUrl = "$endpoint$API_VERSION"
+    private val baseUrl = "$url$API_VERSION"
 
     //region =================== Auth ===================
 

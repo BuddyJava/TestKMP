@@ -4,8 +4,11 @@ import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.ios.Ios
 import kotlin.system.getTimeMillis
 
-internal actual val platform: String = "ios"
-internal actual fun currentTimeMillis(): Long = getTimeMillis()
+actual object Platform {
+    actual val name: String = "ios"
+    internal actual fun currentTimeMillis(): Long = getTimeMillis()
+}
+
 
 internal fun createHttpEngine(
     cacheSize: Long,

@@ -3,7 +3,7 @@ package io.mercuryo.auth
 import io.mercuryo.entity.VerifyMetaData
 import io.mercuryo.server.Api
 import io.mercuryo.storage.Storage
-import io.mercuryo.util.platform
+import io.mercuryo.util.Platform
 
 internal class AuthManager(
     private val api: Api,
@@ -26,7 +26,7 @@ internal class AuthManager(
             countryCode = countryCode,
             phone = phone,
             refCode = refCode,
-            platform = platform
+            platform = Platform.name
         )
             .saveToken()
     }
